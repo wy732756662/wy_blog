@@ -1,0 +1,60 @@
+---
+layout: post
+title:  "grails框架domain里的beforeInsert和afterInsert什么时候执行"
+date:   2016-10-01 14:24:00 +0800
+categories: grails
+tag: grails
+---
+
+一直在做grails程序开发，最近在项目中遇到一个问题，就是有的时候beforeInsert方法会执行，有的时候不执行。
+项目中某一对象之前是不能选择查看权限的，现在能选择，由于我在beforeInsert里面默认给查看权限赋值了，所以导致这个功能不是很好做。在网上查了一些beforeInsert方法不运行的原因再加上自己的理解，最后问题是解决了，同时也加深了我对grails的beforeInsert、beforeUpdate、beforeDelete、afterInsert、afterUpdate、afterDelete方法的理解。
+首先，之前的整个逻辑是，创建该对象前端和移动端不会传查看权限（checkAuthority）这个字段，我会根据用户设置里的值默认给这个对象加上一个查看权限的值。代码写在beforeInsert里。同时代码里对checkAuthority的约束为
+```
+checkAuthority inList: ['public','private']
+```
+checkAuthority的定义方式为
+```
+checkAuthority = "public" //日程的查看权限,值为：公开模式-"public"和私密模式
+```
+beforeInsert方法为：
+```
+def beforeInsert(){
+this.checkAuthority = this.pUser.getTodoCheckAuthorityOfUser()//获取checkAuthority值的方法
+}
+```
+在插入一个对象时，如果我在控制器里给checkAuthority赋值后也同样会被beforeInsert方法里的赋值给替换掉，所以这样做不行。那如果我定义checkAuthority的时候不给予默认值，然后在beforeInsert里判断如果checkAuthority有值则不再替换，是否可行呢？即：
+```
+String checkAuthority
+```
+在我这样修改了之后，程序不走我在beforeInsert里打的断点，但控制台已经报错（checkAuthority不能为null）。随即我想到了最笨的办法，就是不使用beforeInsert方法，该给checkAuthority赋什么值完全卸载控制器里。但马上就否定了这个方法，因为这不能从根本上解决问题。
+之后我开始考虑为什么不运行beforeInsert方法呢？
+在网上查了一些资料后我发现，不是不运行， 而是还没等到运行呢就报错了。
+具体原因是这样，grails的机制是保存、更新或者删除任何对象的时候都会对对象里的属性进行代码级别的验证，只有认证通过了它才会认为这个对象可以保存到数据库里，然后才会调用beforeInsert等方法，于是由于constraints方法里面定义的约束
+```
+checkAuthority inList: ['public','private']
+```
+
+验证不通过（移动端创建该对象时会传checkAuthority这个值，web端不会，web端又和android保存日程的接口相同，所以web保存失败）。
+对此，我的解决办法是：
+checkAuthority仍然保持之前的默认值，并且在该对象实体类里创建一个不会保存到数据库的boolean值
+```
+String checkAuthority = "public"
+transient changeCheckAuthority = false
+```
+
+在移动端保存日程的时候，将这个值赋值为true，beforeInsert方法如下：
+
+```
+def beforeInsert(){
+if(false==this.changeCheckAuthority){
+this.checkAuthority = this.pUser.getTodoCheckAuthorityOfUser()
+}
+}
+```
+
+这样下来，在代码级别验证永远通过，并且beforeInsert方法也知道什么时候该覆盖checkAuthority的值，什么时候不覆盖
+
+
+[jekyll]:      http://jekyllrb.com
+[jekyll-gh]:   https://github.com/jekyll/jekyll
+[jekyll-help]: https://github.com/jekyll/jekyll-help

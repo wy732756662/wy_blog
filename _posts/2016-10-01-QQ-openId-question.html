@@ -1,0 +1,29 @@
+---
+layout: post
+title:  "移动端qq登录和网页qq登录返回的qqOpenId不同"
+date:   2016-10-01 14:24:00 +0800
+categories: qq登录
+tag: qq登录
+---
+
+今天在做qq绑定的时候出了一点问题，web和移动端qq登录会是两个不同的账号，当然这个问题只出现在beta上，官网试过没有问题。后来再找这个问题的原因时找了好久，最后偶然间才发现，问题如下：
+
+web使用的是qq互联，而移动端（iOS和Android）使用的是qq开放平台，而qq开放平台在创建应用时可以选择是否绑定qq互联的appid和appkey，web在qq互联上有两个应用，一个是beta，一个是官网，目前移动端绑定的都是qq互联平台的官网，所以目前移动端和web在官网上获取同一个用户的qqOpenId是一样的，而和beta获取的qqOpenId是不一样的（因为qq开放平台的应用只能绑定一个qq互联平台的应用），所以在beta同一个qq号会有两个不同的账户。
+
+解决方案：
+
+1.微信和微博可以使用beta测试，qq使用官网测试。
+
+2.早期web不使用qq互联平台作为qq登录的平台。
+
+3.以上两个方案不能彻底解决目前出现的问题，解决方案可以是在qq开放平台再创建一个ios（和android）应用，绑定到qq互联的beta应用的appid和appkey，以后在测试的时候使用不同应用的appid进行登录（即测试beta，ios和web同时使用一套appid和appkey，官网则是另一套）。
+
+吐槽：qq开放平台和qq互联做成这样我是可以理解的，毕竟腾讯作为一个早期的聊天软件，那时候可能技术力量不足，开发体系不够健全，之前功能比现在要少的多，导致现在qq登录对于某一些用户的使用有一定的纰漏，但为什么微信作为一个新时代的聊天工具，对于开发者的开发体验却差的可以。说实话，还是微博的开发好，不会出现这种问题，开发过程也要简易很多。
+
+
+注：我们的网站分为官网和beta两个服务器，​功能做好后放到beta上测试，没问题再更新到官网。
+
+
+[jekyll]:      http://jekyllrb.com
+[jekyll-gh]:   https://github.com/jekyll/jekyll
+[jekyll-help]: https://github.com/jekyll/jekyll-help
