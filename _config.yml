@@ -39,3 +39,7 @@ FB:
     #   num_posts: 5
     #   width: 580
     #   colorscheme: light
+
+sass:
+    sass_dir: _sass
+    style: :compressed

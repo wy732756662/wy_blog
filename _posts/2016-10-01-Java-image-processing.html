@@ -6,28 +6,25 @@ categories: java
 tag: java
 ---
 
-    之前后台对于图片的处理非常的慢，上传一个4M左右的图片，调后台返回图片信息的接口大约需要半分钟的时间才能有返回，web端还好，但是在移动端如果让用户等待半分钟，用户体验很差，所以一般移动端调用接口的等待时间是20秒，如果20秒没有返回则提示用户类似于“请求失败“这样提示。
-而现在的手机像素都非常高，照出来的照片也非常大，所以这个需要在移动端上线前解决。
-查了后台代码发现，速度最慢的地方在Thumbnails生成图片的地方，即：
-Thumbnails.of(this.file.inputStream)
-.size(width, height)
-.outputQuality(this.quality)
-.outputFormat("jpg")
-.toFile(jpgFile);
-
-大多数的时间用在toFile的地方。所以我又找了几个类似的图片处理的工具，最后使用了imgScalr的这个工具类，如果按照以速度优先的方式对图片进行出来，这个接口的速度大约在之前的三分之一左右，但还不是最理想的，我觉着图片处理这个功能 应该在5秒左右最后，明后台继续研究一下看能不能再进一步优化处理速度。
-imgScalr的处理代码如下：
+<p>
+    系统之前用的图片处理的插件是Thumbnails，该插件在处理图片后生成图片的方法Thumbnails.toFile(file)执行时间特别的长。客户端在上传一个4M左右的图片调后台返回图片信息的接口大约需要半分钟的时间才能有返回，如果在移动端让用户等待这么长时间会让用户体验很差。而现在的只能手机像素都很高，照出来的图片很多情况下比4M还要大，所以这个问题需要及时处理。
+</p>
+<p>
+    找了几个类似的图片处理的插件，最后选择了imgScalr的这个工具类，如果按照以速度优先的方式对图片进行处理，这次图片处理的速度大约在之前的三分之一左右。
+</p>
+<p>
+    imgScalr的处理代码如下：
+</p>
+<pre>
 try {
-BufferedImage thumbnail = Scalr.resize(img, Scalr.Method.SPEED, Scalr.Mode.FIT_TO_WIDTH,
-width, height, Scalr.OP_ANTIALIAS);
-
-if (!ImageIO.write(thumbnail, "jpg", jpgFile))
-System.out.println("File write failed.");
+    BufferedImage bi = Scalr.resize(img, Scalr.Method.SPEED, Scalr.Mode.FIT_TO_WIDTH,width, height, Scalr.OP_ANTIALIAS);
+    if (!ImageIO.write(bi, "jpg", jpgFile)) System.out.println("File write failed.");
 } catch (IOException e) {
-e.printStackTrace();
+    e.printStackTrace();
 }
+</pre>
 
-
-[jekyll]:      http://jekyllrb.com
-[jekyll-gh]:   https://github.com/jekyll/jekyll
+<br/>
+[jekyll]:      http://jekyllrb.com<br/>
+[jekyll-gh]:   https://github.com/jekyll/jekyll<br/>
 [jekyll-help]: https://github.com/jekyll/jekyll-help
