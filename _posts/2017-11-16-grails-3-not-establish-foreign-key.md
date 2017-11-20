@@ -162,7 +162,7 @@ public class MyHibernateMappingContextConfiguration extends HibernateMappingCont
     }
 }
 
-</pre>
+/</pre/>
 
 <pre style="font-family: sans-serif;font-size: 14px;color: black;">
 
@@ -348,7 +348,7 @@ public class MyGrailsDomainBinder extends GrailsDomainBinder {
         return prop;
     }
 }
-</pre>
+/</pre/>
 
 application.yml：
 <pre style="font-family: sans-serif;font-size: 14px;color: black;">
