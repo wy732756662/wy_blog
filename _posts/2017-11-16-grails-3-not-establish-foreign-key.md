@@ -86,7 +86,8 @@ public class MyHibernateMappingContextConfiguration extends HibernateMappingCont
 
         Object classLoaderObject = getProperties().get(AvailableSettings.CLASSLOADERS);
         ClassLoader appClassLoader;
-
+</pre>
+<pre>
         if(classLoaderObject instanceof ClassLoader) {
             appClassLoader = (ClassLoader) classLoaderObject;
         }
@@ -105,7 +106,8 @@ public class MyHibernateMappingContextConfiguration extends HibernateMappingCont
                 annotatedClasses.add(javaClass);
             }
         }
-
+</pre>
+<pre>
         if(!additionalClasses.isEmpty()) {
             for (Class additionalClass : additionalClasses) {
                 if(GormEntity.class.isAssignableFrom(additionalClass)) {
@@ -132,6 +134,8 @@ public class MyHibernateMappingContextConfiguration extends HibernateMappingCont
                 }
             }
         };
+</pre>
+<pre>
         EventListenerIntegrator eventListenerIntegrator = new EventListenerIntegrator(hibernateEventListeners, eventListeners);
         BootstrapServiceRegistry bootstrapServiceRegistry = createBootstrapServiceRegistryBuilder()
                 .applyIntegrator(eventListenerIntegrator)
@@ -162,7 +166,7 @@ public class MyHibernateMappingContextConfiguration extends HibernateMappingCont
     }
 }
 
-\</pre\>
+</pre>
 
 <pre style="font-family: sans-serif;font-size: 14px;color: black;">
 
@@ -348,7 +352,7 @@ public class MyGrailsDomainBinder extends GrailsDomainBinder {
         return prop;
     }
 }
-\</pre\>
+</pre>
 
 application.yml：
 <pre style="font-family: sans-serif;font-size: 14px;color: black;">
