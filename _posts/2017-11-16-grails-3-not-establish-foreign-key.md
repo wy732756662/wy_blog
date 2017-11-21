@@ -272,10 +272,10 @@ public class MyHibernateMappingContextConfiguration extends HibernateMappingCont
 
         ClassLoaderService classLoaderService = new ClassLoaderServiceImpl(appClassLoader) {
             @Override
-            public \<S\> Collection\<S\> loadJavaServices(Class\<S\> serviceContract) {
+            public &lt;S&gt; Collection&lt;S&gt; loadJavaServices(Class&lt;S&gt; serviceContract) {
                 if(MetadataContributor.class.isAssignableFrom(serviceContract)) {
                     if(metadataContributor != null) {
-                        return (Collection\<S\>) Arrays.asList(domainBinder, metadataContributor);
+                        return (Collection&lt;S&gt;) Arrays.asList(domainBinder, metadataContributor);
                     }
                     else {
                         return Collections.singletonList((S) domainBinder);
