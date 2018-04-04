@@ -25,7 +25,7 @@ IDEA集成：
     选择File->Settings->Plugins，在搜索框搜索JRebel
 
 <p align="center">
-  <img src="../pic/JRebel/1.png" width="100px"/>
+  <img src="/wy_blog/pic/JRebel/1.png" width="700px"/>
 </p>
 
 
@@ -42,7 +42,7 @@ IDEA集成：
     在IDEA里点击Help->JRebel->Activation，在弹出的窗口上面选择I already have a license
 
 <p align="center">
-  <img src="../pic/JRebel/2.png" width="100px"/>
+  <img src="/wy_blog/pic/JRebel/2.png" width="700px"/>
 </p>
 
 然后将之前拿到的激活码输入，然后点击Activate JRebel。
@@ -69,14 +69,14 @@ IDEA集成：
     点击IDEA里的View->Tool Windows->JRebel，在弹出的窗口里勾选第一排里所有以_ast结尾的选项
 
 <p align="center">
-  <img src="../pic/JRebel/3.png" width="100px"/>
+  <img src="/wy_blog/pic/JRebel/3.png" width="700px"/>
 </p>
 
 
 点击右上角新的Debug按钮运行项目
 
 <p align="center">
-  <img src="../pic/JRebel/4.png" width="100px"/>
+  <img src="/wy_blog/pic/JRebel/4.png" width="700px"/>
 </p>
 
 
